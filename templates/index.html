@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with GPT-4</title>
+</head>
+<body>
+    <h1>Chat with GPT-4</h1>
+    <form action="/ask" method="post">
+        <textarea name="user_input" placeholder="Ask me anything..." rows="4" cols="50"></textarea>
+        <br>
+        <button type="submit">Ask</button>
+    </form>
+    {% if answer %}
+        <h2>Response:</h2>
+        <p>{{ answer }}</p>
+    {% endif %}
+</body>
+</html>
