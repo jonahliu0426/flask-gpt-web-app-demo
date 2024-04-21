@@ -3,18 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with GPT-4</title>
+    <title>Chat with GPT</title>
+    <style>
+        body, html {
+            height: 100%;
+            width:67%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        #container {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+        #chatbox {
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .message { margin-bottom: 10px; }
+        .user { color: blue; }
+        .assistant { color: green; }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
+        }
+        button {
+            width: 100%;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Chat with GPT-4</h1>
-    <form action="/ask" method="post">
-        <textarea name="user_input" placeholder="Ask me anything..." rows="4" cols="50"></textarea>
-        <br>
-        <button type="submit">Ask</button>
-    </form>
-    {% if answer %}
-        <h2>Response:</h2>
-        <p>{{ answer }}</p>
-    {% endif %}
+    <div id="container">
+        <h1>Chat with GPT</h1>
+        <div id="chatbox">
+            {% for message in chat_history %}
+            <div class="message {{ message.role }}">
+                <strong>{{ message.role.title() }}:</strong> {{ message.content }}
+            </div>
+            {% endfor %}
+        </div>
+        <form action="/ask" method="post">
+            <textarea name="user_input" placeholder="Ask me anything..." rows="4"></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </div>
 </body>
 </html>

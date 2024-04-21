@@ -19,7 +19,7 @@ def index():
 def ask():
     user_input = request.form['user_input']
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="tts-1",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": user_input}
