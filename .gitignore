@@ -1,4 +1,11 @@
 venv/
+terraform/.terraform/
 *.pyc
 __pycache__/
 .env
+.tf.env
+.ssh
+*.hcl
+*.backup
+*.tfstate
+*.tfvars

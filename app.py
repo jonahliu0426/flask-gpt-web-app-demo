@@ -1,32 +1,39 @@
-from flask import Flask, request, render_template
-from dotenv import load_dotenv
+from flask import Flask
+# from app.models import db
 import openai
-import os
+import logging
+import sys
+from app.utils import get_secret
 
-# Load environment variables from .env file
-load_dotenv()
+from app.routes import main  # Make sure to adjust the import path according to your package structure
 
-app = Flask(__name__)
+# def init_db():
+#     db.create_all()
 
-# Set up the OpenAI API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+def create_app():
+    app = Flask(__name__)
+    # Register the Blueprint
+    app.register_blueprint(main)
+    app.config['OPENAI_API_KEY'] = get_secret("openai_api_key", "us-east-1")
+    openai.api_key = app.config['OPENAI_API_KEY']
+    logging.info(f"openai_key: {openai.api_key}")
 
-@app.route('/ask', methods=['POST'])
-def ask():
-    user_input = request.form['user_input']
-    response = openai.ChatCompletion.create(
-        model="tts-1",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": user_input}
-        ]
-    )
-    answer = response.choices[0].message['content']
-    return render_template('index.html', user_input=user_input, answer=answer)
+    # with app.app_context():
+    #     init_db()
+
+    return app
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Set up the OpenAI API key
+
+    app = create_app()
+    app.run(debug=True, host='0.0.0.0')
